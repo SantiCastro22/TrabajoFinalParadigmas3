@@ -11,6 +11,18 @@ public class Producto {
     private Float precio;
     private Date fechaCreacion;
 
+    public Producto() {
+    }
+
+    public Producto(Integer id, Categoria categoria, String nombre, String descripcion, Float precio, Date fechaCreacion) {
+        this.id = id;
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.fechaCreacion = fechaCreacion;
+    }
+
     public Integer getId() {
         return id;
     }

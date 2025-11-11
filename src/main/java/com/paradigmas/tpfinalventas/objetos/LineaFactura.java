@@ -6,7 +6,17 @@ public class LineaFactura {
     private Double cantidad;
     private Producto producto;
     private Double subtotal;
-    
+
+    public LineaFactura() {
+    }
+
+    public LineaFactura(Integer id, Double cantidad, Producto producto, Double subtotal) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.producto = producto;
+        this.subtotal = subtotal;
+    }
+
     public Integer getId() {
         return id;
     }

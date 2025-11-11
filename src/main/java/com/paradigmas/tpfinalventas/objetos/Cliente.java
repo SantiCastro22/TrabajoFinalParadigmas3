@@ -8,18 +8,31 @@ public class Cliente {
     private String documento;
     private String nombre;
     private String apellido;
-    private TipoCliente tipoCliente;
     private Date fechaNacimiento;
-    private String cuil;
+    private String direccion;
+    private TipoCliente tipoCliente;
 
-    public String getCuil() {
-        return cuil;
+    public Cliente() {
     }
 
-    public void setCuil(String cuil) {
-        this.cuil = cuil;
+    public Cliente(Integer id, String documento, String nombre, String apellido, Date fechaNacimiento, String direccion, TipoCliente tipoCliente) {
+        this.id = id;
+        this.documento = documento;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.direccion = direccion;
+        this.tipoCliente = tipoCliente;
     }
-    
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -43,7 +56,6 @@ public class Cliente {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public String getDocumento() { return documento;
     }

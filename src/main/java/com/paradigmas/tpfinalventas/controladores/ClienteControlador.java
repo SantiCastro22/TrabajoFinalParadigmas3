@@ -16,13 +16,9 @@ import java.util.logging.Logger;
 public class ClienteControlador implements ICrud<Cliente>{
     
     private Connection connection;
-    
     private Statement stmt;
-    
     private PreparedStatement ps;
-    
     private ResultSet rs;
-    
     private String sql;
     
     
@@ -35,7 +31,8 @@ public class ClienteControlador implements ICrud<Cliente>{
     public boolean crear(Cliente entidad) throws SQLException, Exception{
 
         connection = Conexion.obtenerConexion ();
-        String sql = "INSERT INTO clientes (nombre,apellido,cuil,fecha_nacimiento, tipo_cliente_id) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO clientes (nombre,apellido,documento) VALUES (?,?,?)";
+        //String sql = "INSERT INTO clientes (nombre,apellido,documento,fecha_nacimiento, tipo_cliente_id) VALUES (?,?,?,?,?)";
         Date fecha = new Date(entidad.getFechaNacimiento().getTime());
         try {
             ps = connection.prepareStatement(sql);

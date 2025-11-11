@@ -32,7 +32,7 @@ public class Conexion {
             USER = dotenv.get("POSTGRES_USER");
             PASS = dotenv.get("POSTGRES_PASSWORD");
 
-            URL = "jdbc:postgresql://"+POSTGRES_HOST+":"+POSTGRES_PORT+"/"+POSTGRES_DB+"?serverTimezone=UTC";
+            URL = "jdbc:postgresql://"+POSTGRES_HOST+":"+POSTGRES_PORT+"/"+POSTGRES_DB;
             
             Class.forName(JDBC_DRIVER);
       

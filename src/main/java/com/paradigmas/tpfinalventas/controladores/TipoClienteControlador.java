@@ -41,15 +41,12 @@ public class TipoClienteControlador implements ICrud<TipoCliente>{
       @Override
     public List<TipoCliente> listar() throws SQLException,Exception{
         
-     connection = Conexion.obtenerConexion ();
-        try{
-            
-            this.stmt = connection.createStatement();
-            this.sql = "SELECT * FROM tipo_cliente";
-            this.rs   = stmt.executeQuery(sql);
-            connection.close();
-            
-            ArrayList<TipoCliente> tipoClientes = new ArrayList();
+        List<TipoCliente> tipoClientes = new ArrayList<>();
+        String sql = "SELECT * FROM tipo_cliente";
+        
+        try (Connection conn = Conexion.obtenerConexion();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             
             while(rs.next()){
                 
@@ -60,16 +57,11 @@ public class TipoClienteControlador implements ICrud<TipoCliente>{
                 tipoCliente.setId(rs.getInt("id"));
 
                 tipoClientes.add(tipoCliente);
-                
             }
-            //System.out.println(cont);
-            return tipoClientes;
-        } catch(SQLException ex){
+        } catch(Exception ex){ // Catching generic Exception as in the signature
             ex.printStackTrace();
         }
-        return null;
-    
-
+        return tipoClientes;
     }
     
 }

@@ -4,6 +4,7 @@ import com.paradigmas.tpfinalventas.ui.abm.AbmCliente;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Principal extends javax.swing.JFrame {
@@ -11,6 +12,10 @@ public class Principal extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Principal.class.getName());
 
     private void showPanel(JPanel p){
+        if (p == null) {
+        System.err.println("Panel es null");
+        return;
+    }
         p.setSize(774, 436);
         p.setLocation(0, 0);
         content.removeAll();
@@ -41,7 +46,6 @@ public class Principal extends javax.swing.JFrame {
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnInicio.setText("INICIO");
         btnInicio.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +118,16 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(content, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -128,7 +141,9 @@ public class Principal extends javax.swing.JFrame {
         try {
             abmCliente = new AbmCliente();
         } catch (Exception ex) {
-            System.getLogger(Principal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            ex.printStackTrace(); // Muestra el error real
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            return;
         }
         showPanel(abmCliente);
         

@@ -4,21 +4,17 @@ import com.paradigmas.tpfinalventas.objetos.Producto;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
-
 public class GrillaProducto extends AbstractTableModel{
-        private ArrayList<Producto> productos = new ArrayList<>();
     
-    
+    private ArrayList<Producto> productos = new ArrayList<>();
     
     public GrillaProducto(ArrayList<Producto> datos) {
         this.productos = datos;
     }
     
-    
-
     @Override
     public int getRowCount() {
-        return productos.size(); //To change body of generated methods, choose Tools | Templates.
+        return productos.size();
     }
 
     @Override
@@ -38,7 +34,6 @@ public class GrillaProducto extends AbstractTableModel{
               case 2: return producto.getCategoria();
               default: return "";
           }
-        
     }
 
     @Override

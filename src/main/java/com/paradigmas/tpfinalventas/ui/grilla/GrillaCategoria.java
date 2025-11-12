@@ -52,6 +52,4 @@ public class GrillaCategoria extends AbstractTableModel{
             return categorias.get(rowIndex);
    }
     
- 
-    
 }

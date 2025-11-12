@@ -1,6 +1,7 @@
 package com.paradigmas.tpfinalventas.ui;
 
 import com.paradigmas.tpfinalventas.ui.abm.AbmCliente;
+import com.paradigmas.tpfinalventas.ui.abm.AbmProducto;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,6 +63,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnProducto.setText("PRODUCTOS");
+        btnProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductoActionPerformed(evt);
+            }
+        });
 
         btnFactura.setText("FACTURAS");
 
@@ -89,7 +95,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btnCliente)
                     .addComponent(btnProducto)
                     .addComponent(btnFactura))
-                .addContainerGap())
+                .addGap(3, 3, 3))
         );
 
         javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
@@ -148,6 +154,11 @@ public class Principal extends javax.swing.JFrame {
         showPanel(abmCliente);
         
     }//GEN-LAST:event_btnClienteActionPerformed
+
+    private void btnProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoActionPerformed
+        AbmProducto abmProducto = new AbmProducto();
+        showPanel(abmProducto);
+    }//GEN-LAST:event_btnProductoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

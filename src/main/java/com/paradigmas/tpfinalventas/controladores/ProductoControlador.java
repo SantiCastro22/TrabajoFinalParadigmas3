@@ -17,16 +17,11 @@ import java.util.logging.Logger;
 
 public class ProductoControlador implements ICrud<Producto>{
 
-   private Connection connection;
-
+    private Connection connection;
     private Statement statementmt;
-
     private PreparedStatement ps;
-
     private ResultSet resultSet;
-
     private String query;
-    
     private CategoriaControlador categoriaControlador;
 
 

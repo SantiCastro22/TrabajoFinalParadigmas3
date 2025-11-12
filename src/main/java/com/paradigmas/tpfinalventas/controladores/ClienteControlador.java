@@ -18,6 +18,37 @@ public class ClienteControlador {
     private static final Logger LOGGER = Logger.getLogger(ClienteControlador.class.getName());
 
     public boolean crear(Cliente cliente) {
+          /*
+        if(cliente == null){
+            JOptionPane.ShowMessageDialog(null, "El cliente no puede ser nulo);
+            return false;
+        }
+        if(cliente.getDocumento() == null || cliente.getDocumento().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "Debe indicar un Nº de documento valido.");
+            return false;
+        }
+        if(cliente.getNombre() == null || cliente.getNombre().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "El nombre debe tener al menos 3 caracteres.");
+            return false;
+        }
+        if(cliente.getApellido() == null || cliente.getApellido().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "El apellido debe tener al menos 3 caracteres.");
+            return false;
+        }
+        if(cliente.getDireccion() == null || cliente.getDireccion().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "La dirección debe tener al menos 3 caracteres.");
+            return false;
+        }
+        if(cliente.getTipoCliente() == null || cliente.getTipoCliente().getId()<=0){
+            JOptionPane.ShowMessageDialog(null, "Debe seleccionar un tipo de cliente valido.");
+            return false;
+        }
+        if(cliente.getTipoCliente() == null || cliente.getTipoCliente().getId()<=0){
+            JOptionPane.ShowMessageDialog(null, "Debe seleccionar un tipo de cliente valido.");
+            return false;
+        }
+    
+        */
         String sql = "INSERT INTO cliente (documento, nombre, apellido, fecha_nacimiento, direccion, tipo_cliente_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Conexion.obtenerConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {

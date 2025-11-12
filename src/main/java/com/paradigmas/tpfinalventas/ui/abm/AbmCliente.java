@@ -6,6 +6,7 @@ import com.paradigmas.tpfinalventas.objetos.Cliente;
 import com.paradigmas.tpfinalventas.objetos.TipoCliente;
 import com.paradigmas.tpfinalventas.ui.grilla.GrillaCliente;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -25,7 +26,7 @@ public class AbmCliente extends javax.swing.JPanel {
         modelCombo = new DefaultComboBoxModel(tipoClienteControlador.listar().toArray());   
         itemsTipoCliente.setModel(modelCombo);
     
-        grillaCliente = new GrillaCliente(clienteControlador.listar());
+        grillaCliente = new GrillaCliente((ArrayList<Cliente>) clienteControlador.listar());
         jtListaClientes.setModel(grillaCliente);
         simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     }
@@ -252,7 +253,7 @@ public class AbmCliente extends javax.swing.JPanel {
     
     private void refreshTable(){
         try {
-            jtListaClientes.setModel(new GrillaCliente(clienteControlador.listar()));
+            jtListaClientes.setModel(new GrillaCliente((ArrayList<Cliente>) clienteControlador.listar()));
         } catch (Exception ex) {
             Logger.getLogger(AbmCliente.class.getName()).log(Level.SEVERE, null, ex);
         }

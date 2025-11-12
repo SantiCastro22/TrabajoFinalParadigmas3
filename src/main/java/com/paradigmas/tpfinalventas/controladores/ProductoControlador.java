@@ -27,6 +27,19 @@ public class ProductoControlador implements ICrud<Producto>{
 
     @Override
     public boolean crear(Producto entidad) throws SQLException, Exception {
+            /*if(entidad.getNombre() == null || entidad.getNombre().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "El nombre debe tener al menos 3 caracteres.");
+            return false;
+        }
+        if(entidad.getDescripcion() == null || entidad.getDescripcion().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "La desscripcion debe tener al menos 3 caracteres.");
+            return false;
+        }
+         if(entidad.getPrecio() == null || entidad.getPrecio()<=0){
+            JOptionPane.ShowMessageDialog(null, "El precio no puede ser negativo.");
+            return false;
+        }
+        */
         
         connection = Conexion.obtenerConexion ();
         String sql = "INSERT INTO productos (nombre,descripcion,precio,fecha_creacion, categoria_id) VALUES (?,?,?,?,?)";

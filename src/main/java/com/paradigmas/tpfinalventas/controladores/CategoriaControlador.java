@@ -58,6 +58,15 @@ public class CategoriaControlador implements ICrud<Categoria>{
     @Override
     public boolean crear(Categoria entidad) throws SQLException, Exception{
          connection = Conexion.obtenerConexion ();
+         /*if(entidad.getDenominacion() == null || entidad.getDenominacion().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "La denominación debe tener al menos 3 caracteres.");
+            return false;
+        }
+        if(entidad.getDescripcion() == null || entidad.getDescripcion().trim().length()<3){
+            JOptionPane.ShowMessageDialog(null, "La descripción debe tener al menos 3 caracteres.");
+            return false;
+        }
+        */
          String sql = "INSERT INTO categorias (denominacion,descripcion) VALUES (?,?)";
         
         try {

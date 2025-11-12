@@ -1,24 +1,32 @@
 package com.paradigmas.tpfinalventas.ui.abm;
 
+import com.paradigmas.tpfinalventas.controladores.CategoriaControlador;
 import com.paradigmas.tpfinalventas.controladores.ProductoControlador;
 import com.paradigmas.tpfinalventas.objetos.Categoria;
 import com.paradigmas.tpfinalventas.objetos.Producto;
 import com.paradigmas.tpfinalventas.ui.grilla.GrillaProducto;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 
 public class AbmProducto extends javax.swing.JPanel {
     
-    private Producto producto;
-    private GrillaProducto grillaProducto;
-    private ProductoControlador productoControlador = new ProductoControlador();
-    private Categoria categoria = new Categoria();
+    private final ProductoControlador productoControlador;
+    private final CategoriaControlador categoriaControlador;
     
     public AbmProducto() {
         initComponents();
+        
+        productoControlador = new ProductoControlador();
+        categoriaControlador = new CategoriaControlador();
+        
+        cargarCategoriasEnComboBox();
+        
+        refreshTable();
     }
 
     /**
@@ -45,7 +53,7 @@ public class AbmProducto extends javax.swing.JPanel {
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         jtListaProductos = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtProductos = new javax.swing.JTable();
         labelCategoriaProducto = new javax.swing.JLabel();
         labelNombreCategoria = new javax.swing.JLabel();
         labelDescripcionCategoria = new javax.swing.JLabel();
@@ -58,31 +66,11 @@ public class AbmProducto extends javax.swing.JPanel {
 
         labelNombre.setText("Nombre");
 
-        inputNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputNombreActionPerformed(evt);
-            }
-        });
-
         labelDescripcion.setText("Descripcion");
-
-        inputDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputDescripcionActionPerformed(evt);
-            }
-        });
-
-        inputPrecio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputPrecioActionPerformed(evt);
-            }
-        });
 
         labelPrecio.setText("Precio");
 
         labelCategoria.setText("Categoria");
-
-        itemsCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnAgregar.setText("AGREGAR");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -112,36 +100,29 @@ public class AbmProducto extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jtListaProductos.setViewportView(jTable1);
+        jtProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtProductosMouseClicked(evt);
+            }
+        });
+        jtListaProductos.setViewportView(jtProductos);
 
         labelCategoriaProducto.setText("NUEVA CATEGORIA");
 
         labelNombreCategoria.setText("Nombre");
 
         labelDescripcionCategoria.setText("Descripcion");
-
-        inputDescripcionCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputDescripcionCategoriaActionPerformed(evt);
-            }
-        });
-
-        inputNombreCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputNombreCategoriaActionPerformed(evt);
-            }
-        });
 
         btnAgregarCategoria.setText("AGREGAR");
         btnAgregarCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -271,102 +252,254 @@ public class AbmProducto extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void inputNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputNombreActionPerformed
-
-    private void inputDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDescripcionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputDescripcionActionPerformed
-
-    private void inputPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputPrecioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputPrecioActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        producto = new Producto();
-        producto.setNombre(inputNombre.getText());
-        producto.setDescripcion(inputDescripcion.getText());
-        producto.setPrecio(Float.valueOf(inputPrecio.getText()));
-        producto.setCategoria((Categoria)itemsCategoria.getSelectedItem());
-
+        Producto nuevoProducto = new Producto();
+        nuevoProducto.setNombre(inputNombre.getText());
+        nuevoProducto.setDescripcion(inputDescripcion.getText());
+        
         try {
-            productoControlador.crear(producto);
-        } catch (Exception ex) {
-            Logger.getLogger(AbmCliente.class.getName()).log(Level.SEVERE, null, ex);
+            nuevoProducto.setPrecio(Float.valueOf(inputPrecio.getText()));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        this.resetFields();
-        this.refreshTable();
+        
+        nuevoProducto.setCategoria((Categoria)itemsCategoria.getSelectedItem());
+        nuevoProducto.setFechaCreacion(new java.util.Date());
+
+        if (productoControlador.crear(nuevoProducto)) {
+            JOptionPane.showMessageDialog(this, "Producto agregado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            refreshTable();
+            resetFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al agregar el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        inputNombre.setText("");
-        inputDescripcion.setText("");
-        inputPrecio.setText("");
+        resetFields();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaSeleccionada = jtProductos.getSelectedRow();
+        
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Por favor, seleccione un producto de la tabla para eliminar.", 
+                "Acción Requerida", 
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
 
-        //int filaSeleccionada = jtListaProductos.getSelectedRow();
-        //if (filaSeleccionada == -1) {
-            //JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la tabla para eliminar.", "Acción requerida", JOptionPane.WARNING_MESSAGE);
-            //return;
-        //}
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea eliminar este producto?",
+            "Confirmar Eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
 
-        //int confirmacion = JOptionPane.showConfirmDialog(
-           // this,
-            //"¿Está seguro de que desea eliminar a este cliente?",
-            //"Confirmar eliminación",
-            //JOptionPane.YES_NO_OPTION,
-            //JOptionPane.QUESTION_MESSAGE
-        //);
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
 
-        //if (confirmacion != JOptionPane.YES_OPTION) {
-          //  return;
-        //}
+        Integer idProducto = (Integer) jtProductos.getModel().getValueAt(filaSeleccionada, 0);
+        
+        Producto productoAEliminar = new Producto();
+        productoAEliminar.setId(idProducto);
 
-        //Integer idProducto = (Integer) jtListaProductos.getModel().getValueAt(filaSeleccionada, 0);
+        boolean exito = productoControlador.eliminar(productoAEliminar);
 
-        //boolean exito = productoControlador.eliminar(idProducto);
-
-        //if (exito) {
-            //JOptionPane.showMessageDialog(this, "Producto eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            //refreshTable();
-            //resetFields();
-        //} else {
-            //JOptionPane.showMessageDialog(this, "Error al eliminar el producto. Es posible que esté asociado a una factura.", "Error", JOptionPane.ERROR_MESSAGE);
-        //}
+        if (exito) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Producto eliminado exitosamente.", 
+                "Éxito", 
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            refreshTable();    
+            resetFields();     
+        } else {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Error al eliminar el producto. Es posible que esté asociado a una factura.", 
+                "Error de Eliminación", 
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int filaSeleccionada = jtProductos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Por favor, seleccione un producto de la tabla para modificar.",
+                "Acción Requerida",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
 
+        Integer idProducto = (Integer) jtProductos.getModel().getValueAt(filaSeleccionada, 0);
+
+        String nombre = inputNombre.getText();
+        String descripcion = inputDescripcion.getText();
+        String precioStr = inputPrecio.getText();
+        Categoria categoria = (Categoria) itemsCategoria.getSelectedItem();
+
+        if (nombre.trim().isEmpty() || descripcion.trim().isEmpty() || precioStr.trim().isEmpty() || categoria == null) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Todos los campos (Nombre, Descripción, Precio y Categoría) son obligatorios.",
+                "Error de Validación",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        Producto productoModificado = new Producto();
+        productoModificado.setId(idProducto); 
+        productoModificado.setNombre(nombre);
+        productoModificado.setDescripcion(descripcion);
+        productoModificado.setCategoria(categoria);
         
+        Producto productoOriginal = productoControlador.extraer(idProducto);
+        if (productoOriginal != null) {
+            productoModificado.setFechaCreacion(productoOriginal.getFechaCreacion());
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se encontró el producto original para modificar.", "Error Crítico", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            productoModificado.setPrecio(Float.parseFloat(precioStr));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        boolean exito = productoControlador.modificar(productoModificado);
+
+        if (exito) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Producto modificado exitosamente.",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            refreshTable();    
+            resetFields();     
+        } else {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al modificar el producto.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void inputDescripcionCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDescripcionCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputDescripcionCategoriaActionPerformed
-
-    private void inputNombreCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNombreCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputNombreCategoriaActionPerformed
-
     private void btnAgregarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCategoriaActionPerformed
-        // TODO add your handling code here:
+        String nombreCategoria = inputNombreCategoria.getText();
+        String descripcionCategoria = inputDescripcionCategoria.getText();
+
+        if (nombreCategoria.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "El nombre de la categoría no puede estar vacío.",
+                "Error de Validación",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        
+        Categoria nuevaCategoria = new Categoria();
+        nuevaCategoria.setDenominacion(nombreCategoria);
+        nuevaCategoria.setDescripcion(descripcionCategoria);
+
+        boolean exito = categoriaControlador.crear(nuevaCategoria);
+
+        if (exito) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Categoría agregada exitosamente.",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            cargarCategoriasEnComboBox();
+            inputNombreCategoria.setText("");
+            inputDescripcionCategoria.setText("");
+        } else {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al agregar la categoría. Es posible que ya exista una con el mismo nombre.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btnAgregarCategoriaActionPerformed
+
+    private void jtProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtProductosMouseClicked
+        int filaSeleccionada = jtProductos.getSelectedRow();
+        
+        if (filaSeleccionada == -1) {
+            return;
+        }
+
+        Integer idProducto = (Integer) jtProductos.getModel().getValueAt(filaSeleccionada, 0);
+
+        Producto productoSeleccionado = productoControlador.extraer(idProducto);
+        
+        if (productoSeleccionado != null) {
+            inputNombre.setText(productoSeleccionado.getNombre());
+            inputDescripcion.setText(productoSeleccionado.getDescripcion());
+            inputPrecio.setText(String.valueOf(productoSeleccionado.getPrecio()));
+
+            Categoria categoriaDelProducto = productoSeleccionado.getCategoria();
+            DefaultComboBoxModel<Categoria> model = (DefaultComboBoxModel<Categoria>) itemsCategoria.getModel();
+        
+            for (int i = 0; i < model.getSize(); i++) {
+                if (model.getElementAt(i).getId().equals(categoriaDelProducto.getId())) {
+                    itemsCategoria.setSelectedIndex(i);
+                    break;
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los datos del producto.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jtProductosMouseClicked
 
     private void resetFields(){
         inputNombre.setText("");
         inputDescripcion.setText("");
         inputPrecio.setText("");
+        if (itemsCategoria.getItemCount() > 0) {
+            itemsCategoria.setSelectedIndex(0);
+        }
+        jtProductos.clearSelection();
     }
 
     private void refreshTable(){
-        //try {
-            //jtListaProductos.setModel(new GrillaProducto((ArrayList<Producto>) productoControlador.listar()));
-        //} catch (Exception ex) {
-            //Logger.getLogger(AbmCliente.class.getName()).log(Level.SEVERE, null, ex);
-        //}
+        try {
+            List<Producto> productos = productoControlador.listar();
+            jtProductos.setModel(new GrillaProducto((ArrayList<Producto>) productos));
+        } catch (Exception ex) {
+            Logger.getLogger(AbmProducto.class.getName()).log(Level.SEVERE, "Error al refrescar la tabla de productos", ex);
+        }
+    }
+    
+    private void cargarCategoriasEnComboBox() {
+        try {
+            List<Categoria> categorias = categoriaControlador.listar();
+            DefaultComboBoxModel<Categoria> modelCombo = new DefaultComboBoxModel<>(categorias.toArray(new Categoria[0]));
+            itemsCategoria.setModel(modelCombo);
+        } catch (Exception ex) {
+            Logger.getLogger(AbmProducto.class.getName()).log(Level.SEVERE, "Error al cargar categorías en el ComboBox", ex);
+            JOptionPane.showMessageDialog(this, "Error al cargar las categorías.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -380,10 +513,10 @@ public class AbmProducto extends javax.swing.JPanel {
     private javax.swing.JTextField inputNombre;
     private javax.swing.JTextField inputNombreCategoria;
     private javax.swing.JTextField inputPrecio;
-    private javax.swing.JComboBox<String> itemsCategoria;
+    private javax.swing.JComboBox<Categoria> itemsCategoria;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JScrollPane jtListaProductos;
+    private javax.swing.JTable jtProductos;
     private javax.swing.JLabel labelCategoria;
     private javax.swing.JLabel labelCategoriaProducto;
     private javax.swing.JLabel labelDescripcion;

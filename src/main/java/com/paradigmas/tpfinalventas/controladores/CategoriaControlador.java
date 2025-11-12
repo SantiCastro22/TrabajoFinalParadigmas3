@@ -1,6 +1,5 @@
 package com.paradigmas.tpfinalventas.controladores;
 
-
 import com.paradigmas.tpfinalventas.dominio.Conexion;
 import com.paradigmas.tpfinalventas.objetos.Categoria;
 import java.sql.Connection;
@@ -9,108 +8,110 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+public class CategoriaControlador implements ICrud<Categoria> {
 
-public class CategoriaControlador implements ICrud<Categoria>{
-    
-    private Connection connection;
-    private Statement stmt;
-    private PreparedStatement ps;
-    private ResultSet rs;
-    private String sql;
-    
+    private static final Logger LOGGER = Logger.getLogger(CategoriaControlador.class.getName());
+
     @Override
-    public ArrayList<Categoria> listar() throws SQLException, Exception{
-    
-     connection = Conexion.obtenerConexion ();
-        try{
-            
-            this.stmt = connection.createStatement();
-            this.sql = "SELECT * FROM categorias";
-            this.rs   = stmt.executeQuery(sql);
-            connection.close();
-            
-            ArrayList<Categoria> categorias = new ArrayList();
-            
-            while(rs.next()){
-                
+    public List<Categoria> listar() {
+        List<Categoria> categorias = new ArrayList<>();
+        String sql = "SELECT * FROM categoria";
+
+        try (Connection conn = Conexion.obtenerConexion();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
                 Categoria categoria = new Categoria();
-                
+                categoria.setId(rs.getInt("id"));
                 categoria.setDenominacion(rs.getString("denominacion"));
                 categoria.setDescripcion(rs.getString("descripcion"));
-                categoria.setId(rs.getInt("id"));
-                
-                        //System.out.println(cliente);
                 categorias.add(categoria);
-                
             }
-            //System.out.println(cont);
-            //connection.close();
-            return categorias;
-        } catch(SQLException ex){
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al listar las categorías", ex);
+        }
+        return categorias;
+    }
+
+    @Override
+    public boolean crear(Categoria entidad) {
+        String sql = "INSERT INTO categoria (denominacion, descripcion) VALUES (?, ?)";
+        
+        try (Connection conn = Conexion.obtenerConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, entidad.getDenominacion());
+            ps.setString(2, entidad.getDescripcion());
+            
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al crear la categoría", ex);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean eliminar(Categoria entidad) {
+        String sql = "DELETE FROM categoria WHERE id = ?";
+        
+        try (Connection conn = Conexion.obtenerConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, entidad.getId());
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al eliminar la categoría con ID: " + entidad.getId(), ex);
+            return false;
+        }
+    }
+
+    @Override
+    public Categoria extraer(int id) {
+        String sql = "SELECT * FROM categoria WHERE id = ?";
+        
+        try (Connection conn = Conexion.obtenerConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, id);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Categoria categoria = new Categoria();
+                    categoria.setId(rs.getInt("id"));
+                    categoria.setDenominacion(rs.getString("denominacion"));
+                    categoria.setDescripcion(rs.getString("descripcion"));
+                    return categoria;
+                }
+            }
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al extraer la categoría con ID: " + id, ex);
         }
         return null;
     }
 
     @Override
-    public boolean crear(Categoria entidad) throws SQLException, Exception{
-         connection = Conexion.obtenerConexion ();
-         String sql = "INSERT INTO categorias (denominacion,descripcion) VALUES (?,?)";
+    public boolean modificar(Categoria entidad) {
+        String sql = "UPDATE categoria SET denominacion = ?, descripcion = ? WHERE id = ?";
         
-        try {
-            ps = connection.prepareStatement(sql);
+        try (Connection conn = Conexion.obtenerConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
             ps.setString(1, entidad.getDenominacion());
             ps.setString(2, entidad.getDescripcion());
-            ps.executeUpdate();
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(CategoriaControlador.class.getName()).log(Level.SEVERE, null, ex);
+            ps.setInt(3, entidad.getId());
+            
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al modificar la categoría con ID: " + entidad.getId(), ex);
+            return false;
         }
-        return false;
     }
-
-    @Override
-    public boolean eliminar(Categoria entidad) throws SQLException, Exception{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Categoria extraer(int id) throws SQLException, Exception{
-            connection = Conexion.obtenerConexion();
-            sql = "SELECT * FROM categorias WHERE id = ?";
-            ps = connection.prepareStatement(sql);
-            
-            ps.setInt(1, id);
-            
-            
-            this.rs   = ps.executeQuery();
-            
-            connection.close();
-            
-            this.rs.next();
-            Categoria categoria = new Categoria();
-            categoria.setId(id);
-            categoria.setDenominacion(rs.getString("denominacion"));
-            categoria.setDescripcion(rs.getString("descripcion"));
-            return categoria;
-    }
-
-    @Override
-    public boolean modificar(Categoria entidad) throws SQLException, Exception {
-       connection = Conexion.obtenerConexion ();
-       this.sql = "UPDATE categorias SET denominacion=?, descripcion=? WHERE id=?";
-        
-       ps = connection.prepareStatement(sql);
-       ps.setString(1,entidad.getDenominacion() );
-       ps.setString(2,entidad.getDescripcion() );
-       ps.setInt(3, entidad.getId());
-       
-       ps.executeUpdate();
-       connection.close();
-       return true;
-    }
-    
 }

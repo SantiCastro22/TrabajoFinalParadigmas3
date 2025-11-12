@@ -20,7 +20,7 @@ public class GrillaCliente extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {
-         return 5;
+         return 6;
     }
 
     @Override
@@ -31,7 +31,8 @@ public class GrillaCliente extends AbstractTableModel{
             case 1 -> cliente.getNombre();
             case 2 -> cliente.getApellido();
             case 3 -> cliente.getDocumento();
-            case 4 -> cliente.getFechaNacimiento();
+            case 4 -> cliente.getDireccion();
+            case 5 -> cliente.getFechaNacimiento();
             default -> "";
         };
     }
@@ -43,7 +44,8 @@ public class GrillaCliente extends AbstractTableModel{
             case 1 -> "Nombre";
             case 2 -> "Apellido";
             case 3 -> "Documento";
-            case 4 -> "Fecha Nacimiento";
+            case 4 -> "Direccion";
+            case 5 -> "Fecha Nacimiento";
             default -> "";
         };
     }

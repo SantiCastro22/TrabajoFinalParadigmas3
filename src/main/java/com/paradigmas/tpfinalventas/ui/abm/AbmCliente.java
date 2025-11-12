@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 public class AbmCliente extends javax.swing.JPanel {
 
@@ -19,13 +20,13 @@ public class AbmCliente extends javax.swing.JPanel {
     private TipoClienteControlador tipoClienteControlador = new TipoClienteControlador();
     private DefaultComboBoxModel modelCombo;
     private SimpleDateFormat simpleDateFormat;
-    
+
     public AbmCliente() throws Exception {
         initComponents();
-        
-        modelCombo = new DefaultComboBoxModel(tipoClienteControlador.listar().toArray());   
+
+        modelCombo = new DefaultComboBoxModel(tipoClienteControlador.listar().toArray());
         itemsTipoCliente.setModel(modelCombo);
-    
+
         grillaCliente = new GrillaCliente((ArrayList<Cliente>) clienteControlador.listar());
         jtListaClientes.setModel(grillaCliente);
         simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -57,7 +58,11 @@ public class AbmCliente extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtListaClientes = new javax.swing.JTable();
+        labelDireccion = new javax.swing.JLabel();
+        inputDireccion = new javax.swing.JTextField();
+        btnEliminar = new javax.swing.JButton();
 
+        textMain.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         textMain.setText("ABM CLIENTES");
 
         labelNombre.setText("Nombre");
@@ -105,6 +110,11 @@ public class AbmCliente extends javax.swing.JPanel {
         });
 
         btnModificar.setText("MODIFICAR");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         jtListaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,19 +127,45 @@ public class AbmCliente extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtListaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtListaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtListaClientes);
+
+        labelDireccion.setText("Direccion");
+
+        inputDireccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputDireccionActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setText("ELIMINAR");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(331, 331, 331)
-                        .addComponent(textMain))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(textMain)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,30 +182,28 @@ public class AbmCliente extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(labelTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(28, 28, 28)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(inputDireccion)
                                     .addComponent(itemsTipoCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(inputFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnLimpiar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnModificar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnAgregar)))
-                        .addGap(48, 48, 48)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)))
-                .addGap(17, 17, 17))
+                                    .addComponent(inputFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(textMain)
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(textMain)
+                        .addGap(28, 28, 28)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelNombre)
                             .addComponent(inputNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -182,6 +216,10 @@ public class AbmCliente extends javax.swing.JPanel {
                             .addComponent(labelDocumento)
                             .addComponent(inputDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelDireccion)
+                            .addComponent(inputDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelFecha)
                             .addComponent(inputFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -189,13 +227,15 @@ public class AbmCliente extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelTipoCliente)
                             .addComponent(itemsTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)
+                        .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAgregar)
-                            .addComponent(btnLimpiar)
-                            .addComponent(btnModificar))
-                        .addGap(49, 49, 49)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                            .addComponent(btnLimpiar))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnModificar)
+                            .addComponent(btnEliminar))))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -226,13 +266,15 @@ public class AbmCliente extends javax.swing.JPanel {
         inputApellido.setText("");
         inputNombre.setText("");
         inputDocumento.setText("");
+        inputDireccion.setText("");
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        cliente = new Cliente();   
+        cliente = new Cliente();
         cliente.setApellido(inputApellido.getText());
         cliente.setNombre(inputNombre.getText());
         cliente.setDocumento(inputDocumento.getText());
+        cliente.setDireccion(inputDireccion.getText());
         cliente.setFechaNacimiento(inputFecha.getDate());
         cliente.setTipoCliente((TipoCliente)itemsTipoCliente.getSelectedItem());
 
@@ -244,13 +286,130 @@ public class AbmCliente extends javax.swing.JPanel {
         this.resetFields();
         this.refreshTable();
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void inputDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDireccionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputDireccionActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+
+        int filaSeleccionada = jtListaClientes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la tabla para modificar.", "Acción requerida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Integer idCliente = (Integer) jtListaClientes.getModel().getValueAt(filaSeleccionada, 0);
+
+        String documento = inputDocumento.getText();
+        String nombre = inputNombre.getText();
+        String apellido = inputApellido.getText();
+        String direccion = inputDireccion.getText();
+        java.util.Date fechaNacimiento = inputFecha.getDate();
+        TipoCliente tipoCliente = (TipoCliente) itemsTipoCliente.getSelectedItem();
+
+        if (documento.trim().isEmpty() || nombre.trim().isEmpty() || apellido.trim().isEmpty() || fechaNacimiento == null) {
+            JOptionPane.showMessageDialog(this, "Los campos Nombre, Apellido, Documento y Fecha son obligatorios.", "Error de validacion", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Cliente clienteModificado = new Cliente();
+        clienteModificado.setId(idCliente);
+        clienteModificado.setDocumento(documento);
+        clienteModificado.setNombre(nombre);
+        clienteModificado.setApellido(apellido);
+        clienteModificado.setDireccion(direccion);
+        clienteModificado.setFechaNacimiento(fechaNacimiento);
+        clienteModificado.setTipoCliente(tipoCliente);
+
+       
+        boolean exito = clienteControlador.modificar(clienteModificado);
+
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Cliente modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            refreshTable();
+            resetFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al modificar el cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    
+    private void jtListaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtListaClientesMouseClicked
+      
+        int filaSeleccionada = jtListaClientes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            return;
+        }
+
+        Integer idCliente = (Integer) jtListaClientes.getModel().getValueAt(filaSeleccionada, 0);
+
+        Cliente clienteSeleccionado = clienteControlador.extraer(idCliente);
+
+        if (clienteSeleccionado != null) {
+            inputDocumento.setText(clienteSeleccionado.getDocumento());
+            inputNombre.setText(clienteSeleccionado.getNombre());
+            inputApellido.setText(clienteSeleccionado.getApellido());
+            inputDireccion.setText(clienteSeleccionado.getDireccion());
+            inputFecha.setDate(clienteSeleccionado.getFechaNacimiento());
+
+            TipoCliente tipoDelCliente = clienteSeleccionado.getTipoCliente();
+            //DefaultComboBoxModel<TipoCliente> model = (DefaultComboBoxModel<TipoCliente>) itemsTipoCliente.getModel();
+            //for (int i = 0; i < model.getSize(); i++) {
+              //  if (model.getElementAt(i).getId().equals(tipoDelCliente.getId())) {
+                //    itemsTipoCliente.setSelectedIndex(i);
+                 //   break; // Salimos del bucle una vez que lo encontramos.
+                //}
+            //}
+        } else {
+        JOptionPane.showMessageDialog(this, "No se pudieron cargar los datos del cliente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jtListaClientesMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+        int filaSeleccionada = jtListaClientes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un cliente de la tabla para eliminar.", "Acción requerida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea eliminar a este cliente?",
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        Integer idCliente = (Integer) jtListaClientes.getModel().getValueAt(filaSeleccionada, 0);
+
+
+        boolean exito = clienteControlador.eliminar(idCliente);
+
+ 
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Cliente eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            refreshTable();
+            resetFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el cliente. Es posible que esté asociado a una factura.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+  
     
     private void resetFields(){
         inputApellido.setText("");
         inputNombre.setText("");
         inputDocumento.setText("");
+        inputDireccion.setText("");
     }
-    
+
     private void refreshTable(){
         try {
             jtListaClientes.setModel(new GrillaCliente((ArrayList<Cliente>) clienteControlador.listar()));
@@ -261,9 +420,11 @@ public class AbmCliente extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JTextField inputApellido;
+    private javax.swing.JTextField inputDireccion;
     private javax.swing.JTextField inputDocumento;
     private com.toedter.calendar.JDateChooser inputFecha;
     private javax.swing.JTextField inputNombre;
@@ -272,6 +433,7 @@ public class AbmCliente extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtListaClientes;
     private javax.swing.JLabel labelApellido;
+    private javax.swing.JLabel labelDireccion;
     private javax.swing.JLabel labelDocumento;
     private javax.swing.JLabel labelFecha;
     private javax.swing.JLabel labelNombre;

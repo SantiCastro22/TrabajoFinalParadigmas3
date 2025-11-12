@@ -1,6 +1,7 @@
 package com.paradigmas.tpfinalventas.ui;
 
 import com.paradigmas.tpfinalventas.ui.abm.AbmCliente;
+import com.paradigmas.tpfinalventas.ui.abm.AbmFactura;
 import com.paradigmas.tpfinalventas.ui.abm.AbmProducto;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
@@ -70,6 +71,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnFactura.setText("FACTURAS");
+        btnFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainContainerLayout = new javax.swing.GroupLayout(mainContainer);
         mainContainer.setLayout(mainContainerLayout);
@@ -159,6 +165,11 @@ public class Principal extends javax.swing.JFrame {
         AbmProducto abmProducto = new AbmProducto();
         showPanel(abmProducto);
     }//GEN-LAST:event_btnProductoActionPerformed
+
+    private void btnFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturaActionPerformed
+        AbmFactura abmFactura = new AbmFactura();
+        showPanel(abmFactura);
+    }//GEN-LAST:event_btnFacturaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

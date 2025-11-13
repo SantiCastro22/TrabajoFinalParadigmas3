@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,6 +24,19 @@ public class FacturaControlador implements ICrud<Factura> {
 
     private static final Logger LOGGER = Logger.getLogger(FacturaControlador.class.getName());
 
+    private long obtenerSiguienteIdUnico(Connection conn) throws SQLException {
+        // Usamos la secuencia global de la BD
+        String sql = "SELECT nextval('factura_seq')";
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                return rs.getLong(1);
+            } else {
+                throw new SQLException("No se pudo obtener el siguiente ID único de la secuencia.");
+            }
+        }
+    }
+
     @Override
     public boolean crear(Factura factura) {
         String sqlFactura = "INSERT INTO factura (numero_factura, cliente_id, forma_pago_id, fecha_emision, total, observaciones) VALUES (?, ?, ?, ?, ?, ?)";
@@ -30,10 +45,16 @@ public class FacturaControlador implements ICrud<Factura> {
         Connection conn = null;
         try {
             conn = Conexion.obtenerConexion();
-
             conn.setAutoCommit(false);
 
-            //  Insertar factura principal
+            // Obtener ID único y formatear el número de factura en Java
+            long idUnico = obtenerSiguienteIdUnico(conn);
+            LocalDate hoy = LocalDate.now();
+            String anioMes = hoy.format(DateTimeFormatter.ofPattern("yyyyMM"));
+            String numeroFacturaFormateado = String.format("F-%s-%06d", anioMes, idUnico);
+            factura.setNumeroFactura(numeroFacturaFormateado);
+
+            // Insertar la factura principal
             try (PreparedStatement psFactura = conn.prepareStatement(sqlFactura, Statement.RETURN_GENERATED_KEYS)) {
                 psFactura.setString(1, factura.getNumeroFactura());
                 psFactura.setInt(2, factura.getCliente().getId());
@@ -44,7 +65,6 @@ public class FacturaControlador implements ICrud<Factura> {
                 
                 psFactura.executeUpdate();
 
-                // Obtener el ID de la factura creada
                 try (ResultSet generatedKeys = psFactura.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         factura.setId(generatedKeys.getInt(1));
@@ -54,14 +74,14 @@ public class FacturaControlador implements ICrud<Factura> {
                 }
             }
 
-            // Insertar linea de la factura
+            // Insertar las lineas de la factura
             try (PreparedStatement psLinea = conn.prepareStatement(sqlLinea)) {
                 for (LineaFactura linea : factura.getLineaFactura()) {
                     psLinea.setInt(1, factura.getId());
                     psLinea.setInt(2, linea.getProducto().getId());
                     psLinea.setDouble(3, linea.getCantidad());
                     psLinea.setDouble(4, linea.getSubtotal());
-                    psLinea.addBatch(); // Agrupar las inserciones
+                    psLinea.addBatch();
                 }
                 psLinea.executeBatch();
             }
@@ -70,7 +90,7 @@ public class FacturaControlador implements ICrud<Factura> {
             return true;
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al crear la factura. Se Revirte la transaccion.", ex);
+            LOGGER.log(Level.SEVERE, "Error al crear la factura. Revirtiendo transacción.", ex);
             if (conn != null) {
                 try {
                     conn.rollback();
@@ -85,7 +105,7 @@ public class FacturaControlador implements ICrud<Factura> {
                     conn.setAutoCommit(true);
                     conn.close();
                 } catch (SQLException e) {
-                    LOGGER.log(Level.SEVERE, "Error al cerrar la conexion.", e);
+                    LOGGER.log(Level.SEVERE, "Error al cerrar la conexión.", e);
                 }
             }
         }
@@ -142,7 +162,6 @@ public class FacturaControlador implements ICrud<Factura> {
                     formaPago.setDescripcion(rs.getString("fp_desc"));
                     factura.setFormaDePago(formaPago);
                     
-                    // Cargar de las de la factura
                     factura.setLineaFactura(extraerLineasDeFactura(factura.getId(), conn));
                 }
             }
@@ -184,14 +203,13 @@ public class FacturaControlador implements ICrud<Factura> {
 
     @Override
     public boolean modificar(Factura entidad) {
-        LOGGER.log(Level.WARNING, "La modificación de facturas no está implementada por completo.");
+        LOGGER.log(Level.WARNING, "La modificación de facturas no está implementada.");
         return false;
     }
 
     @Override
     public List<Factura> listar() {
         List<Factura> facturas = new ArrayList<>();
-
         String sql = "SELECT f.id, f.numero_factura, f.fecha_emision, f.total, " +
                      "c.id AS cliente_id, c.nombre AS cliente_nombre, c.apellido AS cliente_apellido " +
                      "FROM factura f " +

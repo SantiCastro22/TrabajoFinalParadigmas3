@@ -74,3 +74,5 @@ CREATE TABLE linea_factura (
     CONSTRAINT chk_linea_cantidad_positiva CHECK (cantidad > 0),
     CONSTRAINT chk_linea_subtotal_positivo CHECK (subtotal >= 0)
 );
+
+CREATE SEQUENCE factura_seq START WITH 1;

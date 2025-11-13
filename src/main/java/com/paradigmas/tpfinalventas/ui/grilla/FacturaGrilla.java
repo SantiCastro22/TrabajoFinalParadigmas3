@@ -30,7 +30,7 @@ public class FacturaGrilla extends AbstractTableModel {
            Factura c = facturas.get(rowIndex);
                 
           switch(columnIndex){
-              case 0: return c.getId();
+              case 0: return c.getNumeroFactura();
               case 1: return c.getFecha();
               case 2: return c.getTotal();
               default: return "";
@@ -41,7 +41,7 @@ public class FacturaGrilla extends AbstractTableModel {
     public String getColumnName(int column) {
         
         switch(column){
-            case 0: return "ID";
+            case 0: return "Numero";
             case 1: return "Fecha";
             case 2: return "Total";
             default: return "";

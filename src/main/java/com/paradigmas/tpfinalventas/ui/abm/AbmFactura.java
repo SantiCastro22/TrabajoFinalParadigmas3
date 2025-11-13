@@ -49,6 +49,9 @@ public class AbmFactura extends javax.swing.JPanel {
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 1000, 1);
         cantidadSeleccionada.setModel(spinnerModel);
         jtLineaFactura.setModel(new LineaGrilla(new ArrayList<>()));
+        
+        inputNumeroFactura.setEnabled(false);
+        inputNumeroFactura.setToolTipText("El número de factura se genera automáticamente");
     }
 
     private void cargarDatosIniciales() {
@@ -248,20 +251,16 @@ public class AbmFactura extends javax.swing.JPanel {
             return;
         }
 
-        // Convertir los valores a Double
         double cantidadDouble = (double) cantidadInt;
         double subtotal = (double) (producto.getPrecio() * cantidadInt);
 
-        // Crear la línea de factura
         LineaFactura nuevaLinea = new LineaFactura();
         nuevaLinea.setProducto(producto);
         nuevaLinea.setCantidad(cantidadDouble);
         nuevaLinea.setSubtotal(subtotal);
 
-        // Añadir la línea a la lista temporal
         lineasFacturaActual.add(nuevaLinea);
 
-        // Actualizar la tabla de líneas y el total
         actualizarTablaLineas();
         actualizarTotal();
     }
@@ -269,22 +268,20 @@ public class AbmFactura extends javax.swing.JPanel {
     private void btnCrearFacturaActionPerformed(java.awt.event.ActionEvent evt) {
         Cliente cliente = (Cliente) clienteSelected.getSelectedItem();
         FormaPago formaPago = (FormaPago) formaPagoSelected.getSelectedItem();
-        String numeroFactura = inputNumeroFactura.getText();
 
-        if (cliente == null || formaPago == null || numeroFactura.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Cliente, Forma de Pago y Número de Factura son obligatorios.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        if (cliente == null || formaPago == null) {
+            JOptionPane.showMessageDialog(this, "Cliente y Forma de Pago son obligatorios.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (lineasFacturaActual.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "La factura debe tener al menos una línea.", "Error de Validación", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "La factura debe tener al menos una linea.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Factura nuevaFactura = new Factura();
         nuevaFactura.setCliente(cliente);
         nuevaFactura.setFormaDePago(formaPago);
-        nuevaFactura.setNumeroFactura(numeroFactura);
         nuevaFactura.setFecha(new Date());
         nuevaFactura.setLineaFactura(lineasFacturaActual);
         nuevaFactura.setTotal(totalFacturaActual);
@@ -293,7 +290,7 @@ public class AbmFactura extends javax.swing.JPanel {
         boolean exito = facturaControlador.crear(nuevaFactura);
 
         if (exito) {
-            JOptionPane.showMessageDialog(this, "Factura creada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Factura creada exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
             limpiarFormulario();
             refreshTableFacturas();
         } else {
@@ -304,7 +301,7 @@ public class AbmFactura extends javax.swing.JPanel {
     private void btnEliminarLineaActionPerformed(java.awt.event.ActionEvent evt) {
         int filaSeleccionada = jtLineaFactura.getSelectedRow();
         if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una línea de producto para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione una linea de producto para eliminar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -319,7 +316,7 @@ public class AbmFactura extends javax.swing.JPanel {
             DefaultComboBoxModel<Producto> model = new DefaultComboBoxModel<>(productos.toArray(new Producto[0]));
             productoSelected.setModel(model);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al cargar productos en el ComboBox", ex);
+            LOGGER.log(Level.SEVERE, "Error al cargar productos", ex);
         }
     }
 
@@ -329,7 +326,7 @@ public class AbmFactura extends javax.swing.JPanel {
             DefaultComboBoxModel<Cliente> model = new DefaultComboBoxModel<>(clientes.toArray(new Cliente[0]));
             clienteSelected.setModel(model);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al cargar clientes en el ComboBox", ex);
+            LOGGER.log(Level.SEVERE, "Error al cargar clientes", ex);
         }
     }
 
@@ -339,7 +336,7 @@ public class AbmFactura extends javax.swing.JPanel {
             DefaultComboBoxModel<FormaPago> model = new DefaultComboBoxModel<>(formasPago.toArray(new FormaPago[0]));
             formaPagoSelected.setModel(model);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al cargar formas de pago en el ComboBox", ex);
+            LOGGER.log(Level.SEVERE, "Error al cargar formas de pago", ex);
         }
     }
 

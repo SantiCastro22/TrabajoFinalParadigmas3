@@ -3,6 +3,7 @@ package com.paradigmas.tpfinalventas.ui;
 import com.paradigmas.tpfinalventas.ui.abm.AbmCliente;
 import com.paradigmas.tpfinalventas.ui.abm.AbmFactura;
 import com.paradigmas.tpfinalventas.ui.abm.AbmProducto;
+import com.paradigmas.tpfinalventas.ui.abm.ContentInicio;
 import java.awt.BorderLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,8 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal() {
         initComponents();
+        ContentInicio inicio = new ContentInicio();
+        showPanel(inicio);
     }
 
     /**
@@ -145,7 +148,8 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
-        // TODO add your handling code here:
+        ContentInicio inicio = new ContentInicio();
+        showPanel(inicio);
     }//GEN-LAST:event_btnInicioActionPerformed
 
     private void btnClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClienteActionPerformed

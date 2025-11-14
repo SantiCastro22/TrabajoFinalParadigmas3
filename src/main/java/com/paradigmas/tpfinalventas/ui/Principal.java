@@ -21,7 +21,7 @@ public class Principal extends javax.swing.JFrame {
         System.err.println("Panel es null");
         return;
     }
-        p.setSize(835, 500);
+        p.setSize(925, 500);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,-1,-1));

@@ -5,6 +5,8 @@ import com.paradigmas.tpfinalventas.ui.abm.AbmFactura;
 import com.paradigmas.tpfinalventas.ui.abm.AbmProducto;
 import com.paradigmas.tpfinalventas.ui.abm.ContentInicio;
 import java.awt.BorderLayout;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,7 +21,7 @@ public class Principal extends javax.swing.JFrame {
         System.err.println("Panel es null");
         return;
     }
-        p.setSize(774, 436);
+        p.setSize(835, 500);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,-1,-1));
@@ -29,6 +31,7 @@ public class Principal extends javax.swing.JFrame {
     
     public Principal() {
         initComponents();
+        labelFechaHeader.setText(fecha());
         ContentInicio inicio = new ContentInicio();
         showPanel(inicio);
     }
@@ -48,10 +51,14 @@ public class Principal extends javax.swing.JFrame {
         btnCliente = new javax.swing.JButton();
         btnProducto = new javax.swing.JButton();
         btnFactura = new javax.swing.JButton();
+        labelFechaHeader = new javax.swing.JLabel();
+        labelNombre = new javax.swing.JLabel();
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnInicio.setBackground(new java.awt.Color(51, 153, 255));
+        btnInicio.setForeground(new java.awt.Color(255, 255, 255));
         btnInicio.setText("INICIO");
         btnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,6 +66,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnCliente.setBackground(new java.awt.Color(51, 153, 255));
+        btnCliente.setForeground(new java.awt.Color(255, 255, 255));
         btnCliente.setText("CLIENTES");
         btnCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,6 +75,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnProducto.setBackground(new java.awt.Color(51, 153, 255));
+        btnProducto.setForeground(new java.awt.Color(255, 255, 255));
         btnProducto.setText("PRODUCTOS");
         btnProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,6 +84,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnFactura.setBackground(new java.awt.Color(51, 153, 255));
+        btnFactura.setForeground(new java.awt.Color(255, 255, 255));
         btnFactura.setText("FACTURAS");
         btnFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,31 +93,42 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        labelFechaHeader.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelFechaHeader.setText("dd/MM/yyyy ");
+
+        labelNombre.setText("SISTEMA VENTAS");
+
         javax.swing.GroupLayout mainContainerLayout = new javax.swing.GroupLayout(mainContainer);
         mainContainer.setLayout(mainContainerLayout);
         mainContainerLayout.setHorizontalGroup(
             mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainContainerLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(btnInicio)
+                .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnCliente)
+                .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnProducto)
                 .addGap(18, 18, 18)
-                .addComponent(btnFactura)
-                .addContainerGap(367, Short.MAX_VALUE))
+                .addComponent(btnFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(133, 133, 133)
+                .addComponent(labelFechaHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
         mainContainerLayout.setVerticalGroup(
             mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainContainerLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addGroup(mainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInicio)
                     .addComponent(btnCliente)
                     .addComponent(btnProducto)
-                    .addComponent(btnFactura))
-                .addGap(3, 3, 3))
+                    .addComponent(btnFactura)
+                    .addComponent(labelFechaHeader)
+                    .addComponent(labelNombre))
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
@@ -115,7 +139,7 @@ public class Principal extends javax.swing.JFrame {
         );
         contentLayout.setVerticalGroup(
             contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 436, Short.MAX_VALUE)
+            .addGap(0, 581, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
@@ -137,16 +161,24 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public static String fecha(){
+        Date fecha = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada = formato.format(fecha);
+        
+        return fechaFormateada;
+    }
+    
     private void btnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioActionPerformed
         ContentInicio inicio = new ContentInicio();
         showPanel(inicio);
@@ -183,6 +215,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnInicio;
     private javax.swing.JButton btnProducto;
     private javax.swing.JPanel content;
+    private javax.swing.JLabel labelFechaHeader;
+    private javax.swing.JLabel labelNombre;
     private javax.swing.JPanel mainContainer;
     // End of variables declaration//GEN-END:variables
 }

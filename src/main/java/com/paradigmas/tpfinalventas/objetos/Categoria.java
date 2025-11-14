@@ -42,5 +42,29 @@ public class Categoria {
     public String toString() {
         return denominacion;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        // Si es el mismo objeto, es igual
+        if (this == obj) {
+            return true;
+        }
+        // Si el otro es nulo o no es de la clase Categoria, no es igual
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        // Comparamos los IDs
+        final Categoria other = (Categoria) obj;
+        if (this.id == null || other.id == null) {
+            return false;
+        }
+        return this.id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        // Un hashCode basado en el ID
+        return (id != null ? id.hashCode() : 0);
+    }
    
 }

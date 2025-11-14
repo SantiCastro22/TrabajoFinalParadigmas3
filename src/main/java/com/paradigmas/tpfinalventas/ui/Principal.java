@@ -1,5 +1,6 @@
 package com.paradigmas.tpfinalventas.ui;
 
+import com.paradigmas.tpfinalventas.ui.abm.AbmCategoria;
 import com.paradigmas.tpfinalventas.ui.abm.AbmCliente;
 import com.paradigmas.tpfinalventas.ui.abm.AbmFactura;
 import com.paradigmas.tpfinalventas.ui.abm.AbmProducto;
@@ -21,7 +22,7 @@ public class Principal extends javax.swing.JFrame {
         System.err.println("Panel es null");
         return;
     }
-        p.setSize(925, 500);
+        p.setSize(925, 560);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,-1,-1));
@@ -53,6 +54,7 @@ public class Principal extends javax.swing.JFrame {
         btnFactura = new javax.swing.JButton();
         labelFechaHeader = new javax.swing.JLabel();
         labelNombre = new javax.swing.JLabel();
+        btnCatCli = new javax.swing.JButton();
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -98,6 +100,15 @@ public class Principal extends javax.swing.JFrame {
 
         labelNombre.setText("SISTEMA VENTAS");
 
+        btnCatCli.setBackground(new java.awt.Color(51, 153, 255));
+        btnCatCli.setForeground(new java.awt.Color(255, 255, 255));
+        btnCatCli.setText("CATEGORIAS");
+        btnCatCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCatCliActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainContainerLayout = new javax.swing.GroupLayout(mainContainer);
         mainContainer.setLayout(mainContainerLayout);
         mainContainerLayout.setHorizontalGroup(
@@ -105,7 +116,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(mainContainerLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
+                .addGap(49, 49, 49)
                 .addComponent(btnInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -113,7 +124,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(btnProducto)
                 .addGap(18, 18, 18)
                 .addComponent(btnFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133)
+                .addGap(18, 18, 18)
+                .addComponent(btnCatCli)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(labelFechaHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -127,7 +140,8 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btnProducto)
                     .addComponent(btnFactura)
                     .addComponent(labelFechaHeader)
-                    .addComponent(labelNombre))
+                    .addComponent(labelNombre)
+                    .addComponent(btnCatCli))
                 .addGap(10, 10, 10))
         );
 
@@ -207,9 +221,15 @@ public class Principal extends javax.swing.JFrame {
         showPanel(abmFactura);
     }//GEN-LAST:event_btnFacturaActionPerformed
 
+    private void btnCatCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCatCliActionPerformed
+        AbmCategoria abmCategoria = new AbmCategoria();
+        showPanel(abmCategoria);
+    }//GEN-LAST:event_btnCatCliActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
+    private javax.swing.JButton btnCatCli;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnFactura;
     private javax.swing.JButton btnInicio;

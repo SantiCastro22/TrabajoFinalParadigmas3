@@ -61,7 +61,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="labelNombre" min="-2" pref="109" max="-2" attributes="0"/>
-                      <EmptySpace pref="99" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                       <Component id="btnInicio" min="-2" pref="93" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnCliente" min="-2" pref="94" max="-2" attributes="0"/>
@@ -69,7 +69,9 @@
                       <Component id="btnProducto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnFactura" min="-2" pref="97" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btnCatCli" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="65" max="32767" attributes="0"/>
                       <Component id="labelFechaHeader" min="-2" pref="112" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
@@ -86,6 +88,7 @@
                           <Component id="btnFactura" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelFechaHeader" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnCatCli" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
@@ -161,6 +164,20 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="SISTEMA VENTAS"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnCatCli">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="99" red="33" type="rgb"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="CATEGORIAS"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCatCliActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

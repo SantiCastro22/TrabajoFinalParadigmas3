@@ -95,6 +95,8 @@ public class AbmCliente extends javax.swing.JPanel {
 
         labelTipoCliente.setText("Tipo cliente");
 
+        inputFecha.setForeground(new java.awt.Color(255, 255, 255));
+
         itemsTipoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnAgregar.setBackground(new java.awt.Color(51, 153, 255));

@@ -13,10 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ClienteControlador {
+public class ClienteControlador implements ICrud<Cliente> {
 
     private static final Logger LOGGER = Logger.getLogger(ClienteControlador.class.getName());
-
+    
+    @Override
     public boolean crear(Cliente cliente) {
         String sql = "INSERT INTO cliente (documento, nombre, apellido, fecha_nacimiento, direccion, tipo_cliente_id) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Conexion.obtenerConexion();
@@ -36,21 +37,24 @@ public class ClienteControlador {
             return false;
         }
     }
-
-    public boolean eliminar(int id) {
+    
+    @Override
+    public boolean eliminar(Cliente entidad) {
         String sql = "DELETE FROM cliente WHERE id = ?";
+        
         try (Connection conn = Conexion.obtenerConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setInt(1, id);
+            ps.setInt(1, entidad.getId());
             return ps.executeUpdate() > 0;
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al eliminar cliente con ID: " + id, ex);
+            LOGGER.log(Level.SEVERE, "Error al eliminar el cliente con ID: " + entidad.getId(), ex);
             return false;
         }
     }
-
+    
+    @Override
     public List<Cliente> listar() {
         List<Cliente> clientes = new ArrayList<>();
         String sql = "SELECT c.id, c.documento, c.nombre, c.apellido, c.fecha_nacimiento, c.direccion, " +
@@ -85,7 +89,8 @@ public class ClienteControlador {
         }
         return clientes;
     }
-
+    
+    @Override
     public boolean modificar(Cliente cliente) {
         String sql = "UPDATE cliente SET documento = ?, nombre = ?, apellido = ?, fecha_nacimiento = ?, direccion = ?, tipo_cliente_id = ? WHERE id = ?";
         try (Connection conn = Conexion.obtenerConexion();
@@ -106,7 +111,8 @@ public class ClienteControlador {
             return false;
         }
     }
-
+    
+    @Override
     public Cliente extraer(int id) {
         String sql = "SELECT c.id, c.documento, c.nombre, c.apellido, c.fecha_nacimiento, c.direccion, " +
                      "tc.id AS tipo_cliente_id, tc.nombre AS tipo_cliente_nombre, tc.descripcion AS tipo_cliente_descripcion " +

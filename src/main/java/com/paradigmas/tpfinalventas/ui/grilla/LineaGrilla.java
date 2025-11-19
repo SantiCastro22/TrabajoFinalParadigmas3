@@ -38,7 +38,7 @@ public class LineaGrilla extends AbstractTableModel {
             case 4:
                 return "Precio Unitario";
             case 5:
-                return "Total";
+                return "Sub Total";
             default:
                 return "";
         }

@@ -64,7 +64,7 @@ public class AbmCliente extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         textMain1 = new javax.swing.JLabel();
 
-        textMain.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        textMain.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         textMain.setText("ABM CLIENTES");
 
         labelNombre.setText("Nombre");
@@ -163,7 +163,7 @@ public class AbmCliente extends javax.swing.JPanel {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        textMain1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        textMain1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         textMain1.setText("LISTA DE CLIENTES");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

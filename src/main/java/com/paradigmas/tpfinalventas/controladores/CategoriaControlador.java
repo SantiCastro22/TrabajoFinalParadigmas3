@@ -33,7 +33,7 @@ public class CategoriaControlador implements ICrud<Categoria> {
                 categorias.add(categoria);
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al listar las categorías", ex);
+            LOGGER.log(Level.SEVERE, "Error al listar las categorias", ex);
         }
         return categorias;
     }
@@ -51,7 +51,7 @@ public class CategoriaControlador implements ICrud<Categoria> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al crear la categoría", ex);
+            LOGGER.log(Level.SEVERE, "Error al crear la categoria", ex);
             return false;
         }
     }
@@ -67,7 +67,7 @@ public class CategoriaControlador implements ICrud<Categoria> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al eliminar la categoría con ID: " + entidad.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Error al eliminar la categoria con ID: " + entidad.getId(), ex);
             return false;
         }
     }
@@ -91,7 +91,7 @@ public class CategoriaControlador implements ICrud<Categoria> {
                 }
             }
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al extraer la categoría con ID: " + id, ex);
+            LOGGER.log(Level.SEVERE, "Error al extraer la categoria con ID: " + id, ex);
         }
         return null;
     }
@@ -110,7 +110,7 @@ public class CategoriaControlador implements ICrud<Categoria> {
             return ps.executeUpdate() > 0;
 
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al modificar la categoría con ID: " + entidad.getId(), ex);
+            LOGGER.log(Level.SEVERE, "Error al modificar la categoria con ID: " + entidad.getId(), ex);
             return false;
         }
     }
